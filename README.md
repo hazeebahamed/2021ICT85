@@ -29,6 +29,7 @@ After matching accession identifiers and applying quality-control filtering, 449
 The retained accessions were classified into six annotated groups: Aromatic, Aus, Indica, O. glaberrima/admix, Temperate Japonica, and Tropical Japonica.
 
 The `O. glaberrima/admix` category is retained from the original dataset's group annotation and does not imply that these selected samples were classified as the species *O. glaberrima*.
+
 ## 4. Methodology
 
 This study followed a quantitative bioinformatics approach to investigate genetic diversity among rice (*Oryza sativa*) accessions using Single Nucleotide Polymorphism (SNP) markers. All data processing, statistical analyses, and visualisations were performed using the R programming language.
@@ -125,7 +126,6 @@ The analysis generated figures illustrating SNP missingness, MAF distribution, p
 
 R scripts were organised sequentially in the `code/` directory. Input and processed datasets were stored in `data/`, numerical outputs in `results/`, and visualisations in `figures/`.
 
-The scripts and outputs were maintained in a GitHub repository to support reproducibility and version tracking.
 
 ## 5. Results
 
@@ -190,53 +190,70 @@ The group-wise dominant-cluster percentages were:
 
 Aromatic showed the highest group consistency, with all 39 accessions assigned to the same cluster. The O. glaberrima/admix annotated group showed the lowest consistency, with 81.08% of its accessions assigned to its dominant cluster.
 
-These findings indicate substantial agreement between the SNP-based clustering results and the supplied group annotations. However,
+These findings indicate substantial agreement between SNP-based clusters and the supplied annotations. However, cluster purity is a descriptive agreement measure, not independently validated classification accuracy.
+
+### 5.5 Genetic Diversity Comparison
+
+Mean expected heterozygosity was calculated across 5,970 polymorphic SNP markers for each annotated group.
+
+| Rice Group | Accessions | Mean Expected Heterozygosity |
+|---|---:|---:|
+| O. glaberrima/admix | 37 | 0.2362 |
+| Indica | 135 | 0.1632 |
+| Tropical Japonica | 74 | 0.1602 |
+| Temperate Japonica | 92 | 0.1412 |
+| Aus | 72 | 0.1410 |
+| Aromatic | 39 | 0.1249 |
+
+The O. glaberrima/admix annotation had the highest mean diversity estimate, whereas Aromatic had the lowest. These are descriptive estimates for the selected SNP panel.
+
+![Genetic Diversity Among Rice Groups](figures/genetic_diversity_comparison.png)
+
+*Figure 5. Mean expected heterozygosity across the six annotated rice groups.*
 
 ## 6. Discussion
 
-The SNP-based analysis revealed substantial genetic differentiation among the rice accessions included in this study. Both Principal Component Analysis (PCA) and hierarchical clustering identified population structure broadly consistent with the six group annotations supplied in the original dataset.
+PCA and hierarchical clustering both revealed genetic structure broadly consistent with the six supplied group annotations.
 
 ### 6.1 Genetic Population Structure
 
-The first two principal components explained 46.94% of the total SNP variation. PC1 accounted for 35.82%, while PC2 accounted for 11.12%.
+PC1 and PC2 together explained 46.94% of SNP variation.
 
 The PCA plot showed that Indica accessions were predominantly separated from Japonica accessions along PC1. Temperate Japonica and Tropical Japonica also formed distinguishable distributions, particularly along PC2.
 
-These patterns suggest that the analysed SNP markers captured genetic differences among the annotated rice populations.
-
-Some overlap and outliers were observed, indicating that genetic variation was not completely explained by the original group classifications.
+Some overlap and outliers show that group separation is incomplete.
 
 ### 6.2 Hierarchical Clustering and Group Agreement
 
-Hierarchical clustering provided additional evidence of genetic differentiation among the rice accessions.
-
-The six-cluster solution achieved an overall cluster purity of 95.10%, indicating that most clusters were dominated by a single annotated rice group.
+The exploratory six-cluster solution achieved 95.10% purity.
 
 Aromatic accessions showed 100% group-wise consistency, while Indica and Temperate Japonica also demonstrated high consistency at 97.78% and 98.91%, respectively.
 
 The O. glaberrima/admix annotated group showed comparatively lower consistency (81.08%), suggesting greater heterogeneity in its clustering assignments.
 
-These results support the population structure observed in the PCA analysis. Nevertheless, cluster purity measures agreement with existing annotations and should not be interpreted as independently validated classification accuracy.
+This agreement supports the PCA patterns but is not independent classification validation.
 
 ### 6.3 Genetic Diversity Among Rice Groups
-
-Expected heterozygosity estimates differed among the six annotated rice groups.
 
 The O. glaberrima/admix group showed the highest mean expected heterozygosity (0.2362), followed by Indica (0.1632) and Tropical Japonica (0.1602).
 
 Aromatic accessions showed the lowest mean expected heterozygosity (0.1249), suggesting comparatively lower within-group allelic variation across the analysed SNP markers.
 
-The relatively high diversity estimate for the O. glaberrima/admix annotated group may reflect genetic heterogeneity among accessions assigned to this category. However, this interpretation requires further investigation because the group label does not represent an independently verified species classification.
+The high estimate for the O. glaberrima/admix annotation may reflect within-group heterogeneity, but its label does not establish species identity.
 
 Differences in expected heterozygosity should also be interpreted cautiously because the groups contain unequal numbers of accessions and the analysis uses a selected SNP marker panel.
 
 ### 6.4 Overall Interpretation
 
-The combined PCA, hierarchical clustering, and expected heterozygosity analyses demonstrate that SNP markers can be used to investigate genetic relationships and diversity among rice accessions.
+Together, these analyses demonstrate how SNP markers can describe population structure and within-group diversity, while remaining sensitive to marker selection and analytical assumptions.
 
-The broad agreement between PCA patterns and hierarchical clustering strengthens the descriptive evidence for genetic population structure within the analysed dataset.
+## 7. Limitations
 
-These
+The predefined 7K SNP array does not represent all genome-wide variants. Group sample sizes differed, and the 15% sample and 10% marker missingness thresholds may affect which accessions and SNPs are represented. Mean imputation for PCA and clustering can influence distances and reduce apparent variation. The six-cluster cut was chosen for comparison with existing labels rather than selected as an optimal cluster number. Group annotations were not independently validated; in particular, the O. glaberrima/admix label must not be interpreted as a species assignment. Finally, expected heterozygosity differences are descriptive: no confidence intervals or significance tests were calculated.
+
+## 8. Conclusion
+
+After quality control, 449 *O. sativa* accessions and 5,972 SNPs remained, of which 5,970 were polymorphic. PC1 and PC2 explained 46.94% of SNP variation, and exploratory hierarchical clusters achieved 95.10% purity relative to supplied group labels. Mean expected heterozygosity ranged from 0.1249 in Aromatic to 0.2362 in the O. glaberrima/admix annotated group. These results illustrate a reproducible R workflow for describing rice genetic diversity, subject to SNP-panel and methodological limitations.
 
 ## 9. Software and Tools
 
@@ -316,20 +333,20 @@ To reproduce the analysis:
 1. Install R and RStudio.
 2. Clone or download this GitHub repository.
 3. Open the project folder in RStudio and set it as the working directory.
-4. Install the required R packages, including `readxl` and `ggplot2`.
+4. Restore dependencies with `renv::restore()` if using the project lockfile, or install `readxl` and `ggplot2`.
 5. Ensure that the original accession metadata and SNP genotype Excel files are present in the `data/` directory.
-6. Run the analysis scripts in numerical order, starting with data import and preprocessing.
+6. Run `code/04_snp_preprocessing.R`, `05_snp_quality_control.R`, and then scripts `09_genotype_encoding.R` through `14_genetic_diversity.R` in numerical order. Scripts `01`–`03`, `06`–`08` support setup and diagnostics.
 7. Examine the generated files in the `results/` and `figures/` directories.
 
-The scripts perform accession selection, missing-data filtering, genotype encoding, MAF analysis, PCA, hierarchical clustering, cluster evaluation and genetic diversity estimation.
 
-The analysis is designed to use the same input files and filtering thresholds described in the Methodology section.
 
 ## 12. References
 
 **Dataset:** Rice Diversity Project, C7AIR 7K SNP genotype dataset, including accession metadata and SNP genotype matrix.
 
-The original dataset publication, repository link, authors and publication year should be added after verification from the source documentation.
+**Original publication:** Morales, K. Y., et al. (2020). *An improved 7K SNP array, the C7AIR, provides a wealth of validated SNP markers for rice breeding and genetics studies.* PLOS ONE, 15(5), e0232479. https://doi.org/10.1371/journal.pone.0232479
+
+**Supplementary tables:** [S1 accession metadata](https://doi.org/10.1371/journal.pone.0232479.s001) and [S4 SNP genotype matrix](https://doi.org/10.1371/journal.pone.0232479.s004).
 
 **Software:** R Core Team. *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing. https://www.r-project.org/
 
